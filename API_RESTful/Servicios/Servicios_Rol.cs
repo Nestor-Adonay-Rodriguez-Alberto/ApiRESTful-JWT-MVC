@@ -32,11 +32,21 @@ namespace API_RESTful.Servicios
 
 
         // OBTIENE UN REGISTRO CON EL MISMO ID:
-        public async Task<Rol> Obtener_PorId(int id)
+        public async Task<Obtener_Rol> Obtener_PorId(int id)
         {
             Rol? Objeto_Obtenido = await _MyDBcontext.Roles.FirstOrDefaultAsync(x => x.IdRol == id);
 
-            return Objeto_Obtenido;
+            if(Objeto_Obtenido==null)
+            {
+                return null;
+            }
+
+            Obtener_Rol rol = new Obtener_Rol
+            {
+                IdRol=Objeto_Obtenido.IdRol,
+                Nombre=Objeto_Obtenido.Nombre
+            };
+            return rol;
         }
 
 
