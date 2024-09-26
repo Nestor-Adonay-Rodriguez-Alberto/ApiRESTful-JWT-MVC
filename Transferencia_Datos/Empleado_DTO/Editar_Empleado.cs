@@ -30,10 +30,6 @@ namespace Transferencia_Datos.Empleado_DTO
         public string Email { get; set; }
 
 
-        [Required(ErrorMessage = "Ingrese Una Contraseña Segura.")]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
-
 
 
         // Referencia Tabla Rol:  * RELACION *
