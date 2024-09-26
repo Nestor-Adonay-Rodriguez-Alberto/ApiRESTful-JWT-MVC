@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Transferencia_Datos.Rol_DTO.Registrados_Rol;
+
 
 namespace Transferencia_Datos.Producto_DTO
 {
-    internal class Registrados_Producto
+    public class Registrados_Producto
     {
         // CLASE:
         public class Producto

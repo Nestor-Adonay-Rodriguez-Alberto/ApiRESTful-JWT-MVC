@@ -1,25 +1,24 @@
 ﻿using API_RESTful.Modelos;
 using API_RESTful.Servicios;
 using Microsoft.AspNetCore.Mvc;
-using Transferencia_Datos.Rol_DTO;
+using Transferencia_Datos.Producto_DTO;
 
 
 namespace API_RESTful.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RolController : ControllerBase
+    public class ProductoController : ControllerBase
     {
         // REPRESENTA LA DB:
-        private readonly Servicios_Rol _Servicios_Rol;
+        private readonly Servicios_Producto _Servicios_Producto;
 
 
         // CONSTRUCTOR:
-        public RolController(Servicios_Rol servicios_Rol)
+        public ProductoController(Servicios_Producto servicios_Producto)
         {
-            _Servicios_Rol = servicios_Rol;
+            _Servicios_Producto = servicios_Producto;
         }
-
 
 
 
@@ -30,21 +29,24 @@ namespace API_RESTful.Controllers
         [HttpGet]
         public async Task<IActionResult> Obtner_Todos()
         {
-            List<Rol> Lista_Roles = await _Servicios_Rol.Obtner_Todos();
+            List<Producto> Lista_Productos = await _Servicios_Producto.Obtner_Todos();
 
             // DTO a retornar:
-            Registrados_Rol Roles_Registrados = new Registrados_Rol();
+            Registrados_Producto Productos_Registrados = new Registrados_Producto();
+            
 
-            foreach (Rol rol in Lista_Roles)
+            foreach (Producto producto in Lista_Productos)
             {
-                Roles_Registrados.Lista_Roles.Add(new Registrados_Rol.Rol
+                Productos_Registrados.Lista_Productos.Add(new Registrados_Producto.Producto
                 {
-                    IdRol = rol.IdRol,
-                    Nombre = rol.Nombre
+                    IdProducto = producto.IdProducto,
+                    Nombre = producto.Nombre,
+                    Precio=producto.Precio,
+                    Fotografia=producto.Fotografia,
                 });
             }
 
-            return Ok(Roles_Registrados);
+            return Ok(Productos_Registrados);
         }
 
 
@@ -52,9 +54,9 @@ namespace API_RESTful.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Obtener_PorId(int id)
         {
-            Obtener_Rol? Objeto_Obtenido = await _Servicios_Rol.Obtener_PorId(id);
+            Producto? Objeto_Obtenido = await _Servicios_Producto.Obtener_PorId(id);
 
-            if(Objeto_Obtenido==null)
+            if (Objeto_Obtenido == null)
             {
                 return NotFound("Registro No Existente.");
             }
@@ -71,28 +73,28 @@ namespace API_RESTful.Controllers
 
         // RECIBE UN OBJETO Y LO GUARDA EN LA DB:
         [HttpPost]
-        public async Task<IActionResult> Registrar_Rol([FromBody] Crear_Rol crear_Rol)
+        public async Task<IActionResult> Registrar_Producto([FromBody] Crear_Producto crear_Producto)
         {
-            int Respuesta = await _Servicios_Rol.Registrar_Rol(crear_Rol);
-            if(Respuesta>0)
+            int Respuesta = await _Servicios_Producto.Registrar_Producto(crear_Producto);
+            if (Respuesta > 0)
             {
-                return Ok("Rol Guardado Correctamente");
+                return Ok("Producto Guardado Correctamente");
             }
             else
             {
-                return NotFound("Error Al Guardar el Rol.");
+                return NotFound("Error Al Guardar el Producto.");
             }
         }
 
 
         // BUSCA UN REGISTRO CON EL MISMO ID EN LA DB Y LO MODIFICA
         [HttpPut]
-        public async Task<IActionResult> Editar_Rol([FromBody] Editar_Rol editar_Rol)
+        public async Task<IActionResult> Editar_Producto([FromBody] Editar_Producto editar_Producto)
         {
-            int Respuesta = await _Servicios_Rol.Editar_Rol(editar_Rol);
+            int Respuesta = await _Servicios_Producto.Editar_Producto(editar_Producto);
             if (Respuesta > 0)
             {
-                return Ok("Rol Editado Correctamente");
+                return Ok("Producto Editado Correctamente");
             }
             else
             {
@@ -104,12 +106,12 @@ namespace API_RESTful.Controllers
 
         // BUSCA UN REGISTRO CON EL MISMO ID EN LA DB Y LO ELIMINA:
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Eliminar_Rol(int id)
+        public async Task<IActionResult> Eliminar_Producto(int id)
         {
-            int Respuesta = await _Servicios_Rol.Eliminar_Rol(id);
+            int Respuesta = await _Servicios_Producto.Eliminar_Producto(id);
             if (Respuesta > 0)
             {
-                return Ok("Rol Eliminado Correctamente");
+                return Ok("Producto Eliminado Correctamente");
             }
             else
             {
@@ -117,6 +119,5 @@ namespace API_RESTful.Controllers
             }
 
         }
-
     }
 }
