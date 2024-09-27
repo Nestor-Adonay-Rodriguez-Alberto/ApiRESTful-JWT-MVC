@@ -13,7 +13,7 @@ namespace API_RESTful.Controllers
         // REPRESENTA LA DB:
         private readonly Servicios_Producto _Servicios_Producto;
 
-
+         
         // CONSTRUCTOR:
         public ProductoController(Servicios_Producto servicios_Producto)
         {
@@ -29,24 +29,9 @@ namespace API_RESTful.Controllers
         [HttpGet]
         public async Task<IActionResult> Obtner_Todos()
         {
-            List<Producto> Lista_Productos = await _Servicios_Producto.Obtner_Todos();
-
-            // DTO a retornar:
-            Registrados_Producto Productos_Registrados = new Registrados_Producto();
-            
-
-            foreach (Producto producto in Lista_Productos)
-            {
-                Productos_Registrados.Lista_Productos.Add(new Registrados_Producto.Producto
-                {
-                    IdProducto = producto.IdProducto,
-                    Nombre = producto.Nombre,
-                    Precio=producto.Precio,
-                    Fotografia=producto.Fotografia,
-                });
-            }
-
-            return Ok(Productos_Registrados);
+            Registrados_Producto Lista_Productos = await _Servicios_Producto.Obtner_Todos();
+         
+            return Ok(Lista_Productos);
         }
 
 
@@ -54,7 +39,7 @@ namespace API_RESTful.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Obtener_PorId(int id)
         {
-            Producto? Objeto_Obtenido = await _Servicios_Producto.Obtener_PorId(id);
+            Obtener_Producto? Objeto_Obtenido = await _Servicios_Producto.Obtener_PorId(id);
 
             if (Objeto_Obtenido == null)
             {

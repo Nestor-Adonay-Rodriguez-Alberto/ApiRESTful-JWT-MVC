@@ -10,7 +10,7 @@ namespace API_RESTful.Servicios
         // Representa La DB:
         private readonly MyDBcontext _MyDBcontext;
 
-
+         
         // Constructor:
         public Servicios_Producto(MyDBcontext myDBcontext)
         {
@@ -23,20 +23,48 @@ namespace API_RESTful.Servicios
         // *****************************************************************
 
         // OBTIENE TODOS LOS REGISTROS DE LA DB:
-        public async Task<List<Producto>> Obtner_Todos()
+        public async Task<Registrados_Producto> Obtner_Todos()
         {
             List<Producto> Lista_Productos = await _MyDBcontext.Productos.ToListAsync();
 
-            return Lista_Productos;
+            // DTO a retornar:
+            Registrados_Producto Productos_Registrados = new Registrados_Producto();
+
+
+            foreach (Producto producto in Lista_Productos)
+            {
+                Productos_Registrados.Lista_Productos.Add(new Registrados_Producto.Producto
+                {
+                    IdProducto = producto.IdProducto,
+                    Nombre = producto.Nombre,
+                    Precio = producto.Precio,
+                    Fotografia = producto.Fotografia,
+                });
+            }
+
+            return Productos_Registrados;
         }
 
 
         // OBTIENE UN REGISTRO CON EL MISMO ID:
-        public async Task<Producto> Obtener_PorId(int id)
+        public async Task<Obtener_Producto> Obtener_PorId(int id)
         {
             Producto? Objeto_Obtenido = await _MyDBcontext.Productos.FirstOrDefaultAsync(x => x.IdProducto == id);
 
-            return Objeto_Obtenido;
+            if (Objeto_Obtenido == null)
+            {
+                return null;
+            }
+
+            Obtener_Producto producto = new Obtener_Producto
+            {
+                IdProducto=Objeto_Obtenido.IdProducto,
+                Nombre=Objeto_Obtenido.Nombre,
+                Precio=Objeto_Obtenido.Precio,
+                Fotografia=Objeto_Obtenido.Fotografia
+            };
+
+            return producto;
         }
 
 
