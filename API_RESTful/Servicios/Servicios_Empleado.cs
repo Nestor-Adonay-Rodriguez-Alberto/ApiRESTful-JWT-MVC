@@ -1,6 +1,7 @@
 ﻿using API_RESTful.Modelos;
 using Microsoft.EntityFrameworkCore;
 using Transferencia_Datos.Empleado_DTO;
+using Transferencia_Datos.Rol_DTO;
 
 
 namespace API_RESTful.Servicios
@@ -23,29 +24,88 @@ namespace API_RESTful.Servicios
         // *****************************************************************
 
         // OBTIENE TODOS LOS REGISTROS DE LA DB:
-        public async Task<List<Empleado>> Obtner_Todos()
+        public async Task<Registrados_Empleado> Obtner_Todos()
         {
-            List<Empleado> Lista_Empleados = await _MyDBcontext.Empleados.ToListAsync();
+            List<Empleado> Lista_Empleados = await _MyDBcontext.Empleados
+                .Include(x=> x.Objeto_Rol)
+                .ToListAsync();
 
-            return Lista_Empleados;
+            // DTO a retornar:
+            Registrados_Empleado Empleados_Registrados = new Registrados_Empleado();
+
+
+            foreach (Empleado empleado in Lista_Empleados)
+            {
+                Empleados_Registrados.Lista_Empleados.Add(new Registrados_Empleado.Empleado
+                {
+                    IdEmpleado = empleado.IdEmpleado,
+                    Nombre = empleado.Nombre,
+                    Salaraio = empleado.Salaraio,
+                    Telefono = empleado.Telefono,
+                    Email = empleado.Email,
+                    Password = empleado.Password,
+                    IdRolEnEmpleado = empleado.IdRolEnEmpleado,
+                    Objeto_Rol = new Registrados_Rol.Rol
+                    {
+                        IdRol = empleado.Objeto_Rol.IdRol,
+                        Nombre = empleado.Objeto_Rol.Nombre
+                    }
+                });
+            }
+            return Empleados_Registrados;
         }
 
 
         // OBTIENE UN REGISTRO CON EL MISMO ID:
-        public async Task<Empleado> Obtener_PorId(int id)
+        public async Task<Obtener_Empleado> Obtener_PorId(int id)
         {
-            Empleado? Objeto_Obtenido = await _MyDBcontext.Empleados.FirstOrDefaultAsync(x => x.IdEmpleado == id);
+            Empleado? Objeto_Obtenido = await _MyDBcontext.Empleados
+                .Include(x=> x.Objeto_Rol)
+                .FirstOrDefaultAsync(x => x.IdEmpleado == id);
 
-            return Objeto_Obtenido;
+            if (Objeto_Obtenido == null)
+            {
+                return null;
+            }
+
+            Obtener_Empleado Empleado = new Obtener_Empleado 
+            {
+                IdEmpleado=Objeto_Obtenido.IdEmpleado,
+                Nombre=Objeto_Obtenido.Nombre,
+                Salaraio=Objeto_Obtenido.Salaraio,
+                Telefono=Objeto_Obtenido.Telefono,
+                Email=Objeto_Obtenido.Email,
+                Password=Objeto_Obtenido.Password,
+                IdRolEnEmpleado=Objeto_Obtenido.IdRolEnEmpleado,
+                Objeto_Rol=new Registrados_Rol.Rol 
+                {
+                    IdRol=Objeto_Obtenido.Objeto_Rol.IdRol,
+                    Nombre=Objeto_Obtenido.Objeto_Rol.Nombre
+                }
+            };
+
+            return Empleado;
         }
 
 
         // OBTIENE TODOS LOS REGISTROS DE Roles DE LA DB:
-        public async Task<List<Rol>> Roles_Registrados()
+        public async Task<Registrados_Rol> Roles_Registrados()
         {
             List<Rol> Lista_Roles = await _MyDBcontext.Roles.ToListAsync();
 
-            return Lista_Roles;
+            // DTO a Retornar:
+            Registrados_Rol Roles_Registrados = new Registrados_Rol();
+
+            foreach(Rol rol in Lista_Roles)
+            {
+                Roles_Registrados.Lista_Roles.Add(new Registrados_Rol.Rol 
+                {
+                    IdRol = rol.IdRol,
+                    Nombre=rol.Nombre
+                });
+            }
+
+            return Roles_Registrados;
         }
 
 
