@@ -91,7 +91,7 @@ namespace UI_MVC.Controllers
         // ********************************************************************
 
         // OBTIENE LOS ROLES Y LOS MANDA EN UN VIEWDATA:
-        public async Task<ActionResult> Registrar_Empleado()
+        public async Task<IActionResult> Registrar_Empleado()
         {
             Registrados_Rol Objeto_Obtenido = await Lista_Roles();
             ViewData["Lista_Roles"] = new SelectList(Objeto_Obtenido.Lista_Roles, "IdRol", "Nombre");
