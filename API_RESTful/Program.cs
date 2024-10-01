@@ -1,6 +1,9 @@
 using API_RESTful.Modelos;
 using API_RESTful.Servicios;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +23,24 @@ builder.Services.AddScoped<Servicios_Empleado>();
 builder.Services.AddScoped<Servicios_Producto>();
 builder.Services.AddScoped<Servicios_De_Autenticacion>();
 
+// AUTENTICACION CON JWT:
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    });
+
+// ROLES DE AUTORIZACION:
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Ingeniero", policy => policy.RequireClaim("Rol", "Ingeniero"));
+});
 
 var app = builder.Build();
 
@@ -33,6 +54,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

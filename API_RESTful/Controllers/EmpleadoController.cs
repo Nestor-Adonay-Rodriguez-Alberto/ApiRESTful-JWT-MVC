@@ -1,5 +1,6 @@
 ﻿using API_RESTful.Modelos;
 using API_RESTful.Servicios;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Transferencia_Datos.Empleado_DTO;
 using Transferencia_Datos.Rol_DTO;
@@ -7,6 +8,7 @@ using Transferencia_Datos.Rol_DTO;
 
 namespace API_RESTful.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class EmpleadoController : ControllerBase

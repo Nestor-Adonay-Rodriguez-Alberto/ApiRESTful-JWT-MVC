@@ -1,10 +1,12 @@
 ﻿using API_RESTful.Modelos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Transferencia_Datos.Producto_DTO;
 
 
 namespace API_RESTful.Servicios
 {
+    [Authorize]
     public class Servicios_Producto
     {
         // Representa La DB:

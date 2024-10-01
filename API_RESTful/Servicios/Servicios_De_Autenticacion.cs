@@ -1,5 +1,4 @@
 ﻿using API_RESTful.Modelos;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -7,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using Transferencia_Datos.Rol_DTO;
 using Transferencia_Datos.Seguridad_DTO;
+
 
 namespace API_RESTful.Servicios
 {
@@ -29,8 +29,7 @@ namespace API_RESTful.Servicios
 
 
         // BUSCA UN REGISTRO CON LAS MISMAS CREDENCIALES:
-        [HttpPost("Login")]
-        public async Task<Autenticado> Login([FromBody] Login login)
+        public async Task<Autenticado> Login(Login login)
         {
             // Registros con el mismo Email:
             List<Empleado> Empleado_Encontrados = await _MyDBcontext.Empleados
@@ -87,10 +86,10 @@ namespace API_RESTful.Servicios
             };
 
             // OBTENGO EN BYTES LA KEY:
-            SymmetricSecurityKey Key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_Configuration.GetSection("JWT:Key").Value));
+            var Key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_Configuration.GetSection("JWT:Key").Value));
 
             // ENCRIPTAMOS LA KEY:
-            SigningCredentials Creds = new SigningCredentials(Key, SecurityAlgorithms.HmacSha512Signature);
+            var Creds = new SigningCredentials(Key, SecurityAlgorithms.HmacSha512Signature);
 
             // CREAMOS EL TOKEN:
             JwtSecurityToken Token_Seguro = new JwtSecurityToken(
