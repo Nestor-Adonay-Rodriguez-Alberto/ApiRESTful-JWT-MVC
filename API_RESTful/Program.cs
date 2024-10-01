@@ -18,6 +18,8 @@ builder.Services.AddDbContext<MyDBcontext>(options => options.UseSqlServer(build
 builder.Services.AddScoped<Servicios_Rol>();
 builder.Services.AddScoped<Servicios_Empleado>();
 builder.Services.AddScoped<Servicios_Producto>();
+builder.Services.AddScoped<Servicios_De_Autenticacion>();
+
 
 var app = builder.Build();
 
