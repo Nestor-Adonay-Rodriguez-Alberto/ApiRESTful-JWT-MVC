@@ -14,8 +14,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// INYECCION PARA USAR LO SECRETO EN TODO LUGAR:
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+
 // INYECCION DE LA DB:
-builder.Services.AddDbContext<MyDBcontext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Cadena_Conexion")));
+builder.Services.AddDbContext<MyDBcontext>(options => options.UseSqlServer(builder.Configuration["Cadena_Conexion"]));
 
 // INYECCION DE LOS SERVICIOS PARA INTERACTUAR CON LA DB:
 builder.Services.AddScoped<Servicios_Rol>();
@@ -30,7 +33,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Key"])),
             ValidateIssuer = false,
             ValidateAudience = false
         };

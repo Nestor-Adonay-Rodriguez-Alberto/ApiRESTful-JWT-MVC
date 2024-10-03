@@ -85,8 +85,8 @@ namespace API_RESTful.Servicios
                 new Claim("Rol", empleado.Objeto_Rol.Nombre),
             };
 
-            // OBTENGO EN BYTES LA KEY:
-            var Key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_Configuration.GetSection("JWT:Key").Value));
+            // OBTENGO EN BYTES LA KEY SECRETA:
+            var Key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_Configuration["Key"]));
 
             // ENCRIPTAMOS LA KEY:
             var Creds = new SigningCredentials(Key, SecurityAlgorithms.HmacSha512Signature);
