@@ -247,5 +247,40 @@ namespace UI_MVC.Controllers
         }
 
 
+
+
+
+        // *******  METODOS PARA PERFIL  *******
+        // *************************************
+
+        // BUSA UN REGISTRO CON EL MISMO ID EN LA DB:
+        public async Task<IActionResult> Perfil()
+        {
+            // Id Obtenido al Iniciar Sesion:
+            int IdEmpleado = Convert.ToInt32(User.FindFirstValue("IdEmpleado"));
+
+            // Token Obtenido al Iniciar Sesion:
+            string Token_Obtenido = User.FindFirstValue("Token_Obtenido");
+
+            // Solicitud "GET" al Endpoint de la API Con Su Token:
+            _HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token_Obtenido);
+            HttpResponseMessage JSON_Obtenido = await _HttpClient.GetAsync("/api/Empleado/" + IdEmpleado);
+
+            // OBJETO:
+            Obtener_Empleado Objeto_Obtenido = new Obtener_Empleado();
+
+            // True=200-299
+            if (JSON_Obtenido.IsSuccessStatusCode)
+            {
+                // Deserializamos el Json:
+                Objeto_Obtenido = await JSON_Obtenido.Content.ReadFromJsonAsync<Obtener_Empleado>();
+            }
+
+            return View(Objeto_Obtenido);
+        }
+
+
+
+
     }
 }

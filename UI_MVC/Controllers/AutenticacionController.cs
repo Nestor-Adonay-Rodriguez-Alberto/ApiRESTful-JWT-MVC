@@ -53,7 +53,8 @@ namespace UI_MVC.Controllers
                 {
                     new Claim(ClaimTypes.Name, Objeto_Obtenido.Nombre),
                     new Claim(ClaimTypes.Role, Objeto_Obtenido.Objeto_Rol.Nombre),
-                    new Claim("Token_Obtenido", Objeto_Obtenido.Token_Seguro)
+                    new Claim("Token_Obtenido", Objeto_Obtenido.Token_Seguro),
+                    new Claim("IdEmpleado", Objeto_Obtenido.IdEmpleado.ToString())
                 };
 
                 // Para Autorizaciones:
