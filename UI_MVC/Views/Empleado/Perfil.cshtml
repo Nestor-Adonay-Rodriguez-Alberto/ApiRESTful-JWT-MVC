@@ -1,7 +1,7 @@
 ﻿@model Transferencia_Datos.Empleado_DTO.Obtener_Empleado
 
 @{
-    ViewData["Title"] = "DETALLE";
+    ViewData["Title"] = "PERFIL";
 }
 
 <style>
@@ -91,7 +91,9 @@
     <!-- BOTONES -->
     <div>
         <a asp-action="Editar_Empleado" asp-route-id="@Model.IdEmpleado" class="btn btn-primary">EDITAR</a> |
+        <a asp-action="Cambiar_Password" class="btn btn-secondary">Cambiar Contraseña</a> |
         <a asp-action="Empleados_Registrados" class="btn btn-secondary">CANCELAR</a>
+
     </div>
 
 </div>

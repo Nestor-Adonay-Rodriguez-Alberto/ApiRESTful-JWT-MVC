@@ -280,7 +280,42 @@ namespace UI_MVC.Controllers
         }
 
 
+        // NOS MANDA A LA VISTA:
+        public async Task<IActionResult> Cambiar_Password()
+        {
+            // Id Obtenido al Iniciar Sesion:
+            int IdEmpleado = Convert.ToInt32(User.FindFirstValue("IdEmpleado"));
 
+            Editar_Contraseña Objeto_Editar = new Editar_Contraseña
+            {
+                IdEmpleado=IdEmpleado,
+            };
+
+            return View(Objeto_Editar);
+        }
+
+
+        // BUSCA UN REGISTRO EN LA DB Y MODIFICA SU CONTRASEÑA:
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Cambiar_Password(Editar_Contraseña editar_Contraseña)
+        {
+            // Token Obtenido al Iniciar Sesion:
+            string Token_Obtenido = User.FindFirstValue("Token_Obtenido");
+
+            // Solicitud "DELETE" al Endpoint de la API Con Su Token:
+            _HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token_Obtenido);
+            HttpResponseMessage Respuesta = await _HttpClient.PutAsJsonAsync("/api/Empleado/Editar_Contraseña", editar_Contraseña);
+
+            // True=200-299
+            if (Respuesta.IsSuccessStatusCode)
+            {
+                // Volemos a Vista Principal:
+                return RedirectToAction("Login", "Autenticacion");
+            }
+
+            return View();
+        }
 
     }
 }
