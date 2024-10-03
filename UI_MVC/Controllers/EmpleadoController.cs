@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Net.Http.Headers;
+using System.Security.Claims;
 using Transferencia_Datos.Empleado_DTO;
 using Transferencia_Datos.Rol_DTO;
 
 namespace UI_MVC.Controllers
 {
+    [Authorize]
     public class EmpleadoController : Controller
     {
         // Para Hacer Solicitudes Al Servidor:
@@ -26,7 +30,11 @@ namespace UI_MVC.Controllers
         // OBTIENE TODOS LOS REGISTROS DE LA DB:
         public async Task<IActionResult> Empleados_Registrados()
         {
-            // Solicitud GET al Endpoint de la API:
+            // Token Obtenido al Iniciar Sesion:
+            string Token_Obtenido = User.FindFirstValue("Token_Obtenido");
+
+            // Solicitud "GET" al Endpoint de la API Con Su Token:
+            _HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token_Obtenido);
             HttpResponseMessage JSON_Obtenidos = await _HttpClient.GetAsync("/api/Empleado");
 
             // OBJETO:
@@ -46,7 +54,11 @@ namespace UI_MVC.Controllers
         // OBTIENE UN REGISTRO CON EL MISMO ID:
         public async Task<IActionResult> Detalle_Empleado(int id)
         {
-            // Solicitud GET al Endpoint de la API:
+            // Token Obtenido al Iniciar Sesion:
+            string Token_Obtenido = User.FindFirstValue("Token_Obtenido");
+
+            // Solicitud "GET" al Endpoint de la API Con Su Token:
+            _HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token_Obtenido);
             HttpResponseMessage JSON_Obtenido = await _HttpClient.GetAsync("/api/Empleado/" + id);
 
             // OBJETO:
@@ -66,7 +78,11 @@ namespace UI_MVC.Controllers
         // OBTIENE TODOS LOS REGISTROS Rol DE LA DB Para ViewData:
         private async Task<Registrados_Rol> Lista_Roles()
         {
-            // Solicitud GET al Endpoint de la API:
+            // Token Obtenido al Iniciar Sesion:
+            string Token_Obtenido = User.FindFirstValue("Token_Obtenido");
+
+            // Solicitud "GET" al Endpoint de la API Con Su Token:
+            _HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token_Obtenido);
             HttpResponseMessage JSON_Obtenidos = await _HttpClient.GetAsync("/api/Empleado/Roles_Registrados");
 
             // OBJETO:
@@ -105,7 +121,11 @@ namespace UI_MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Registrar_Empleado(Crear_Empleado crear_Empleado)
         {
-            // Solicitud POST al Endpoint de la API:
+            // Token Obtenido al Iniciar Sesion:
+            string Token_Obtenido = User.FindFirstValue("Token_Obtenido");
+
+            // Solicitud "POST" al Endpoint de la API Con Su Token:
+            _HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token_Obtenido);
             HttpResponseMessage Respuesta = await _HttpClient.PostAsJsonAsync("/api/Empleado", crear_Empleado);
 
             // True=200-299
@@ -122,7 +142,11 @@ namespace UI_MVC.Controllers
         // BUSCA UN REGISTRO CON EL MISMO ID EN LA DB Y LO MANDA A VISTA
         public async Task<IActionResult> Editar_Empleado(int id)
         {
-            // Solicitud GET al Endpoint de la API:
+            // Token Obtenido al Iniciar Sesion:
+            string Token_Obtenido = User.FindFirstValue("Token_Obtenido");
+
+            // Solicitud "GET" al Endpoint de la API Con Su Token:
+            _HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token_Obtenido);
             HttpResponseMessage JSON_Obtenido = await _HttpClient.GetAsync("/api/Empleado/" + id);
 
             // OBJETO:
@@ -158,7 +182,11 @@ namespace UI_MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Editar_Empleado(Editar_Empleado editar_Empleado)
         {
-            // Solicitud PUT al Endpoint de la API:
+            // Token Obtenido al Iniciar Sesion:
+            string Token_Obtenido = User.FindFirstValue("Token_Obtenido");
+
+            // Solicitud "PUT" al Endpoint de la API Con Su Token:
+            _HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token_Obtenido);
             HttpResponseMessage Respuesta = await _HttpClient.PutAsJsonAsync("/api/Empleado", editar_Empleado);
 
             // True=200-299
@@ -175,7 +203,11 @@ namespace UI_MVC.Controllers
         // BUSCA UN REGISTRO CON EL MISMO ID EN LA DB Y LO MANDA A VISTA:
         public async Task<IActionResult> Eliminar_Empleado(int id)
         {
-            // Solicitud GET al Endpoint de la API:
+            // Token Obtenido al Iniciar Sesion:
+            string Token_Obtenido = User.FindFirstValue("Token_Obtenido");
+
+            // Solicitud "GET" al Endpoint de la API Con Su Token:
+            _HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token_Obtenido);
             HttpResponseMessage JSON_Obtenido = await _HttpClient.GetAsync("/api/Empleado/" + id);
 
             // OBJETO:
@@ -197,7 +229,11 @@ namespace UI_MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Eliminar_Empleado(Obtener_Empleado obtener_Empleado)
         {
-            // Solicitud DELETE al Endpoint de la API:
+            // Token Obtenido al Iniciar Sesion:
+            string Token_Obtenido = User.FindFirstValue("Token_Obtenido");
+
+            // Solicitud "DELETE" al Endpoint de la API Con Su Token:
+            _HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token_Obtenido);
             HttpResponseMessage Respuesta = await _HttpClient.DeleteAsync("/api/Empleado/" + obtener_Empleado.IdEmpleado);
 
             // True=200-299

@@ -35,10 +35,16 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#!">Login</a></li>
-                    <li><a class="dropdown-item" href="#!">Perfil</a></li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li><a class="dropdown-item" href="#!">Logout</a></li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li><a class="dropdown-item" asp-controller="Empleado" asp-action="Perfil">Perfil</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" asp-controller="Autenticacion" asp-action="Login">Logout</a></li>
+                    }
+                    else
+                    {
+                        <li><a class="dropdown-item" asp-controller="Autenticacion" asp-action="Login">Login</a></li>
+                    }
                 </ul>
             </li>
         </ul>
@@ -64,33 +70,38 @@
                             </a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                PRIVACY
-                            </a>
-                        </li>
+                        <!-- Seguridad Al Menu -->
+                        @if (User.Identity.IsAuthenticated)
+                        {
 
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Rol" asp-action="Roles_Registrados">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                ROLES
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                    PRIVACY
+                                </a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Empleado" asp-action="Empleados_Registrados">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                EMPLEADOS
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Rol" asp-action="Roles_Registrados">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                    ROLES
+                                </a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Producto" asp-action="Productos_Registrados">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                PRODUCTOS
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Empleado" asp-action="Empleados_Registrados">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                    EMPLEADOS
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Producto" asp-action="Productos_Registrados">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                    PRODUCTOS
+                                </a>
+                            </li>
+                        }
 
                     </div>
                 </div>

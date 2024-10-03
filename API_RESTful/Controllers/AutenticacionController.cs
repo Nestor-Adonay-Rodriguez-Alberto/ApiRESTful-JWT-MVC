@@ -25,12 +25,12 @@ namespace API_RESTful.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] Login login)
         {
-            Autenticado Empleado_Autenticado = await _Autenticacion.Login(login);
+            Autenticado? Empleado_Autenticado = await _Autenticacion.Login(login);
 
             if(Empleado_Autenticado!=null)
             {
                 return Ok(Empleado_Autenticado);
-            }
+            } 
 
             return NotFound("Credenciales Incorrectas.");
         }
